@@ -6,16 +6,18 @@ if [ "${1#-}" != "$1" ]; then
 	set -- php-fpm "$@"
 fi
 
+USER_ID=${USER_ID:-}
+GROUP_ID=${GROUP_ID:-}
 export USER="www-data"
 if [ ! -z "$USER_ID" -a ! -z "$GROUP_ID" ] ; then
    echo "Switching to user"
    export USER="user"
-	if id "$USER" > /dev/null 2>&1 ; then
-		deluser "$USER"
-		delgroup "$USER"
+	if id "${USER}" > /dev/null 2>&1 ; then
+		deluser "${USER}"
+		delgroup "${USER}"
 	fi
-   addgroup --gid "$GROUP_ID" "$USER"
-   adduser --disabled-password --disabled-login --no-create-home --system --uid "$USER_ID" --gid "$GROUP_ID" "$USER"
+   addgroup -g "${GROUP_ID}" "${USER}"
+   adduser --disabled-password --disabled-login --no-create-home --system --uid "${USER_ID}" --gid "${GROUP_ID}" "${USER}"
 fi
 
 export PHP_SOCKET=${PHP_SOCKET:-FALSE}
