@@ -9,15 +9,18 @@ fi
 USER_ID=${USER_ID:-}
 GROUP_ID=${GROUP_ID:-}
 export USER="www-data"
-if [ ! -z "${USER_ID}" -a ! -z "${GROUP_ID}" ] ; then
+if [ ! -z "$USER_ID" -a ! -z "$GROUP_ID" ] ; then
    echo "Switching to user"
    export USER="user"
 	if id "${USER}" > /dev/null 2>&1 ; then
 		deluser "${USER}"
+	fi
+
+	if grep -q -E "^${USER}:" /etc/group ; then
 		delgroup "${USER}"
 	fi
-   addgroup -g "${GROUP_ID}" "$USER"
-   adduser --disabled-password --disabled-login --no-create-home --system --uid "${USER_ID}" --gid "${GROUP_ID}" "${USER}"
+   addgroup -g "${GROUP_ID}" "${USER}"
+   adduser -D -H -S -u "${USER_ID}" -G "${USER}" "${USER}"
 fi
 
 export PHP_SOCKET=${PHP_SOCKET:-FALSE}
