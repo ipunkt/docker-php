@@ -40,8 +40,8 @@ export PHP_SESSION_PATH=${PHP_SESSION_PATH:-/var/php/sessions}
 
 if [ ! -d "$PHP_SESSION_PATH" ] ; then
 	mkdir -p "$PHP_SESSION_PATH"
-	chown -R "$USER.$USER" "$PHP_SESSION_PATH"
 fi
+chown -R "$USER.$USER" "$PHP_SESSION_PATH"
 
 export SMTP_SERVER=${SMTP_SERVER:-mail}
 export SMTP_USER=${SMTP_USER:-smtp}
