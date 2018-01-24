@@ -1,0 +1,37 @@
+#!/bin/sh
+set -e
+
+# first arg is `-f` or `--some-option`
+if [ "${1#-}" != "$1" ]; then
+	set -- php "$@"
+fi
+
+USER_ID=${USER_ID:-}
+GROUP_ID=${GROUP_ID:-}
+export USER="www-data"
+if [ ! -z "$USER_ID" -a ! -z "$GROUP_ID" ] ; then
+   echo "Switching to user"
+   export USER="user"
+	if id "${USER}" > /dev/null 2>&1 ; then
+		deluser "${USER}"
+	fi
+
+	if grep -q -E "^${USER}:" /etc/group ; then
+		delgroup "${USER}"
+	fi
+   addgroup -g "${GROUP_ID}" "${USER}"
+   adduser -D -H -S -u "${USER_ID}" -G "${USER}" "${USER}"
+fi
+
+export SMTP_SERVER=${SMTP_SERVER:-mail}
+export SMTP_USER=${SMTP_USER:-smtp}
+export SMTP_PASSWORD=${SMTP_PASSWORD:-smtp}
+export SMTP_TLS=${SMTP_TLS:-NO}
+export SMTP_START_TLS=${SMTP_START_TLS:-NO}
+export FROM_OVERRIDE=${FROM_OVERRIDE:-YES}
+
+export HOSTNAME=`hostname`
+
+/usr/local/bin/confd -onetime -backend env
+
+exec "$@"

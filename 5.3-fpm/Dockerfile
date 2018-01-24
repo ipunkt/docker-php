@@ -173,10 +173,21 @@ RUN set -ex \
 COPY confd /etc/confd
 ADD https://github.com/kelseyhightower/confd/releases/download/v0.10.0/confd-0.10.0-linux-amd64 /usr/local/bin/confd
 RUN chmod +x  /usr/local/bin/confd \
-	&& apt-get update && apt-get install -y libmcrypt-dev libmysqlclient-dev \
+	&& apt-get update && apt-get install -y \
+	libmcrypt-dev \
+	libmysqlclient-dev \
+	libsqlite3-dev \
+	libcurl4-gnutls-dev \
+	libgmp-dev \
+	libicu-dev \
+	libpng-dev \
+	libfreetype6-dev \
+	graphicsmagick-libmagick-dev-compat \
 	ssmtp \
-	 && docker-php-ext-install -j$(nproc) iconv mcrypt mysql pdo_mysql \
-	&& docker-php-ext-enable iconv mcrypt mysql pdo_mysql
+	&& ln -s /usr/include/x86_64-linux-gnu/gmp.h /usr/local/include/ \
+	 && docker-php-ext-install -j$(nproc) bcmath iconv mcrypt mysql pdo_sqlite pdo_mysql mbstring json zip curl gmp intl gd
+#RUN pecl install imagick \
+#	 && docker-php-ext-enable imagick
 
 # Entrpoint creating the user and group with the right uid and gid and replacing
 # the ##USER## entries in the config files
