@@ -185,6 +185,7 @@ RUN chmod +x  /usr/local/bin/confd \
 	graphicsmagick-libmagick-dev-compat \
 	ssmtp \
 	&& ln -s /usr/include/x86_64-linux-gnu/gmp.h /usr/local/include/ \
+	&& docker-php-ext-configure gd --with-freetype-dir=/usr/include/freetype2 --with-jpeg-dir=/usr/include \
 	 && docker-php-ext-install -j$(nproc) bcmath iconv mcrypt mysql pdo_sqlite pdo_mysql mbstring json zip curl gmp intl gd
 #RUN pecl install imagick \
 #	 && docker-php-ext-enable imagick

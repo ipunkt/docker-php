@@ -1,0 +1,2 @@
+CPPFLAGS=-I/usr/include
+LDFLAGS=-L/usr/lib
