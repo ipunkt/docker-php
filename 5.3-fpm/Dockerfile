@@ -181,12 +181,19 @@ RUN chmod +x  /usr/local/bin/confd \
 	libgmp-dev \
 	libicu-dev \
 	libpng-dev \
+	libjpeg-dev \
 	libfreetype6-dev \
 	graphicsmagick-libmagick-dev-compat \
 	ssmtp \
 	&& ln -s /usr/include/x86_64-linux-gnu/gmp.h /usr/local/include/ \
+# The freetype2 directory is not formated the way gd expects it.
+# Expected: freetype2/{ft2build.h,freetype/} freetype2/freetype/{...}
+# Actual: freetype2/{...}
+# correcting this manually here
+	&& ln -s /usr/include/freetype2/ /usr/include/freetype2/freetype \
 	&& docker-php-ext-configure gd --with-freetype-dir=/usr/include/freetype2 --with-jpeg-dir=/usr/include \
-	 && docker-php-ext-install -j$(nproc) bcmath iconv mcrypt mysql pdo_sqlite pdo_mysql mbstring json zip curl gmp intl gd
+	&& docker-php-ext-install -j$(nproc) bcmath iconv mcrypt mysql pdo_sqlite pdo_mysql mbstring json zip curl gmp intl gd
+# pecl install does not work with this build for unkown reasons. It produces a segfault into a core dump
 #RUN pecl install imagick \
 #	 && docker-php-ext-enable imagick
 
