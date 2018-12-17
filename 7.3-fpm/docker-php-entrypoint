@@ -1,0 +1,57 @@
+#!/bin/sh
+set -e
+
+# first arg is `-f` or `--some-option`
+if [ "${1#-}" != "$1" ]; then
+	set -- php-fpm "$@"
+fi
+
+USER_ID=${USER_ID:-}
+GROUP_ID=${GROUP_ID:-}
+export USER="www-data"
+if [ ! -z "$USER_ID" -a ! -z "$GROUP_ID" ] ; then
+   echo "Switching to user"
+   export USER="user"
+	if id "${USER}" > /dev/null 2>&1 ; then
+		deluser "${USER}"
+	fi
+
+	if grep -q -E "^${USER}:" /etc/group ; then
+		delgroup "${USER}"
+	fi
+   addgroup -g "${GROUP_ID}" "${USER}"
+   adduser -D -H -S -u "${USER_ID}" -G "${USER}" "${USER}"
+fi
+
+export PHP_SOCKET=${PHP_SOCKET:-FALSE}
+export PHP_BIND=${PHP_BIND:-0.0.0.0:9000}
+export PHP_MEMORY_LIMIT=${PHP_MEMORY_LIMIT:-1024M}
+export PHP_POST_MAX_SIZE=${PHP_POST_MAX_SIZE:-8M}
+export PHP_UPLOAD_MAX_FILESIZE=${PHP_UPLOAD_MAX_FILESIZE:-2M}
+export PHP_PM=${PHP_PM:-dynamic}
+export PHP_MAX_CHILDREN=${PHP_MAX_CHILDREN:-100}
+export PHP_START_SERVERS=${PHP_START_SERVERS:-2}
+export PHP_MIN_SPARE_SERVERS=${PHP_MIN_SPARE_SERVERS:-1}
+export PHP_MAX_SPARE_SERVERS=${PHP_MAX_SPARE_SERVERS:-3}
+export PHP_DEFAULT_TIMEZONE=${DEFAULT_TIMEZONE:-UTC}
+export PHP_CATCH_WORKERS_OUTPUT=${PHP_CATCH_WORKERS_OUTPUT:-yes}
+export PHP_CLEAR_ENV=${PHP_CLEAR_ENV:-no}
+export PHP_SESSION_PATH=${PHP_SESSION_PATH:-/var/php/sessions}
+
+if [ ! -d "$PHP_SESSION_PATH" ] ; then
+	mkdir -p "$PHP_SESSION_PATH"
+fi
+chown -R "$USER.$USER" "$PHP_SESSION_PATH"
+
+export SMTP_SERVER=${SMTP_SERVER:-mail}
+export SMTP_USER=${SMTP_USER:-smtp}
+export SMTP_PASSWORD=${SMTP_PASSWORD:-smtp}
+export SMTP_TLS=${SMTP_TLS:-NO}
+export SMTP_START_TLS=${SMTP_START_TLS:-NO}
+export FROM_OVERRIDE=${FROM_OVERRIDE:-YES}
+
+export HOSTNAME=`hostname`
+
+/usr/local/bin/confd -onetime -backend env
+
+exec "$@"
