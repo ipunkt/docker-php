@@ -3,6 +3,7 @@ RUN apk add --no-cache coreutils sqlite-dev libxml2-dev curl-dev gmp-dev icu-dev
 	&& docker-php-ext-configure gd --with-freetype-dir=/usr/include/freetype2 --with-jpeg-dir=/usr/include \
 	&& docker-php-ext-install -j$(nproc) bcmath pdo pdo_mysql pdo_sqlite mbstring json xml zip curl gmp intl gd soap \
 	&& pecl install imagick \
+	&& pecl install amqp \
 	&& docker-php-ext-enable imagick
 
 FROM php:7.3-fpm-alpine
