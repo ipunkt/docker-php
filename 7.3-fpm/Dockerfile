@@ -14,7 +14,13 @@ ADD https://github.com/kelseyhightower/confd/releases/download/v0.10.0/confd-0.1
 
 RUN chmod +x /usr/local/bin/confd \
 	&& apk add --no-cache sqlite libxml2 curl gmp icu libpng jpeg freetype libzip imagemagick gcc ssmtp rabbitmq-c \
+	# Fix alpine iconv problems part 1
+	# See https://github.com/docker-library/php/issues/240
+	&& apk add --no-cache --repository http://dl-3.alpinelinux.org/alpine/edge/testing gnu-libiconv \
 	&& docker-php-ext-enable bcmath pdo pdo_mysql pdo_sqlite mbstring json xml zip curl gmp intl gd imagick soap
+
+# Fix alpine iconv problems part 2
+ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so
 
 COPY docker-php-entrypoint /usr/local/bin/
 
