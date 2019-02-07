@@ -426,3 +426,4 @@ php_admin_value[upload_max_filesize] = {{ getenv "PHP_UPLOAD_MAX_FILESIZE" }}
 php_admin_value[date.timezone] = {{ getenv "PHP_DEFAULT_TIMEZONE" }}
 php_admin_value[sendmail_path] = "/usr/sbin/sendmail -t -i"
 php_admin_value[session.save_path] = "{{ getenv "PHP_SESSION_PATH" }}"
+php_admin_value[register_globals] = {{ getenv "PHP_REGISTER_GLOBALS" }}
