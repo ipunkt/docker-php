@@ -17,7 +17,7 @@ RUN chmod +x /usr/local/bin/confd \
 	&& docker-php-ext-install mcrypt \
 	# Fix alpine iconv problems part 1
 	# See https://github.com/docker-library/php/issues/240
-	&& apk add --no-cache --repository http://dl-3.alpinelinux.org/alpine/edge/testing gnu-libiconv \
+	&& apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community gnu-libiconv \
 	&& docker-php-ext-enable bcmath pdo pdo_mysql mysql pdo_sqlite mbstring json xml zip curl gmp intl gd imagick soap mcrypt amqp sockets
 #mcrypt predis imagick
 
