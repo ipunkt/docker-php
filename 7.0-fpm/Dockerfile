@@ -1,7 +1,8 @@
 FROM php:7.0-fpm-alpine as builder
 RUN apk add --no-cache coreutils sqlite-dev libxml2-dev curl-dev gmp-dev icu-dev libpng-dev jpeg-dev freetype-dev autoconf imagemagick-dev gcc libc-dev rabbitmq-c-dev make libtool \
 	&& docker-php-ext-configure gd --with-freetype-dir=/usr/include/freetype2 --with-jpeg-dir=/usr/include \
-	&& docker-php-ext-install -j$(nproc) bcmath pdo pdo_mysql pdo_sqlite mbstring json xml zip curl gmp intl gd soap sockets \
+	&& docker-php-ext-install -j$(nproc) bcmath pdo pdo_mysql pdo_sqlite mbstring json xml zip curl gmp intl \
+	    gd soap sockets pcntl \
 	&& pecl install imagick \
 	&& pecl install amqp \
 	&& docker-php-ext-enable imagick
@@ -18,7 +19,9 @@ RUN chmod +x /usr/local/bin/confd \
 	# See https://github.com/docker-library/php/issues/240
 	&& apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community gnu-libiconv \
 	&& docker-php-ext-install mcrypt \
-	&& docker-php-ext-enable bcmath pdo pdo_mysql pdo_sqlite mbstring json xml zip curl gmp intl gd imagick soap mcrypt amqp sockets
+	&& docker-php-ext-enable bcmath pdo pdo_mysql pdo_sqlite mbstring json xml zip curl gmp intl gd imagick soap mcrypt \
+	    amqp sockets pcntl
+
 #mcrypt predis imagick
 
 # Fix alpine iconv problems part 2
