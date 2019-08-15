@@ -197,6 +197,8 @@ RUN chmod +x  /usr/local/bin/confd \
 #RUN pecl install imagick \
 #	 && docker-php-ext-enable imagick
 
+COPY wait-for-it /usr/local/bin/wait-for-it
+
 # Entrpoint creating the user and group with the right uid and gid and replacing
 # the ##USER## entries in the config files
 # Was added to docker-php-entrypoint

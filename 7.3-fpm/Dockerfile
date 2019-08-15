@@ -25,5 +25,7 @@ ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so
 
 COPY docker-php-entrypoint /usr/local/bin/
 
+COPY wait-for-it /usr/local/bin/wait-for-it
+
 ENTRYPOINT ["docker-php-entrypoint"]
 CMD "php-fpm"
