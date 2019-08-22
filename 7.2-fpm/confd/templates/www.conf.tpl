@@ -1,5 +1,6 @@
 [global]
 daemonize = no
+process_control_timeout = {{ getenv "PHP_PROCESS_CONTROL_TIMEOUT" }}
 ; Start a new pool named 'www'.
 ; the variable $pool can be used in any directive and will be replaced by the
 ; pool name ('www' here)
