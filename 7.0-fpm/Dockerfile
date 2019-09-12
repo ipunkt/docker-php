@@ -5,6 +5,7 @@ RUN apk add --no-cache coreutils sqlite-dev libxml2-dev curl-dev gmp-dev icu-dev
 	    gd soap sockets pcntl \
 	&& pecl install imagick \
 	&& pecl install amqp \
+	&& pecl install apcu \
 	&& docker-php-ext-enable imagick
 
 FROM php:7.0-fpm-alpine
@@ -20,7 +21,7 @@ RUN chmod +x /usr/local/bin/confd \
 	&& apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community gnu-libiconv \
 	&& docker-php-ext-install mcrypt \
 	&& docker-php-ext-enable bcmath pdo pdo_mysql pdo_sqlite mbstring json xml zip curl gmp intl gd imagick soap mcrypt \
-	    amqp sockets pcntl
+	    amqp sockets pcntl apcu
 
 #mcrypt predis imagick
 
