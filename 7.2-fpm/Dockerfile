@@ -15,11 +15,11 @@ COPY --from=builder /usr/local/lib/php/extensions/no-debug-non-zts-20170718 /usr
 COPY confd /etc/confd
 ADD https://github.com/kelseyhightower/confd/releases/download/v0.10.0/confd-0.10.0-linux-amd64 /usr/local/bin/confd
 RUN chmod +x /usr/local/bin/confd \
-	&& apk add --no-cache sqlite libxml2 curl gmp icu libpng jpeg freetype imagemagick gcc ssmtp rabbitmq-c \
+	&& apk add --no-cache bash sqlite libxml2 curl gmp icu libpng jpeg freetype imagemagick gcc ssmtp rabbitmq-c \
 	# Fix alpine iconv problems part 1
 	# See https://github.com/docker-library/php/issues/240
 	&& apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community gnu-libiconv \
-	&& docker-php-ext-enable bash bcmath pdo pdo_mysql pdo_sqlite mbstring json xml zip curl gmp intl gd imagick soap amqp \
+	&& docker-php-ext-enable bcmath pdo pdo_mysql pdo_sqlite mbstring json xml zip curl gmp intl gd imagick soap amqp \
 		sockets pcntl apcu
 
 #mcrypt predis imagick
