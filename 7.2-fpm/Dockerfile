@@ -19,7 +19,7 @@ RUN chmod +x /usr/local/bin/confd \
 	# Fix alpine iconv problems part 1
 	# See https://github.com/docker-library/php/issues/240
 	&& apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community gnu-libiconv \
-	&& docker-php-ext-enable bcmath pdo pdo_mysql pdo_sqlite mbstring json xml zip curl gmp intl gd imagick soap amqp \
+	&& docker-php-ext-enable bash bcmath pdo pdo_mysql pdo_sqlite mbstring json xml zip curl gmp intl gd imagick soap amqp \
 		sockets pcntl apcu
 
 #mcrypt predis imagick

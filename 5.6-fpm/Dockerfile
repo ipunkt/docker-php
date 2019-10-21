@@ -15,7 +15,7 @@ COPY --from=builder /usr/local/lib/php/extensions/no-debug-non-zts-20131226 /usr
 COPY confd /etc/confd
 ADD https://github.com/kelseyhightower/confd/releases/download/v0.10.0/confd-0.10.0-linux-amd64 /usr/local/bin/confd
 RUN chmod +x /usr/local/bin/confd \
-	&& apk add --no-cache sqlite libxml2 curl gmp icu libpng jpeg freetype imagemagick gcc ssmtp libmcrypt-dev rabbitmq-c \
+	&& apk add --no-cache bash sqlite libxml2 curl gmp icu libpng jpeg freetype imagemagick gcc ssmtp libmcrypt-dev rabbitmq-c \
 	&& docker-php-ext-install mcrypt \
 	# Fix alpine iconv problems part 1
 	# See https://github.com/docker-library/php/issues/240

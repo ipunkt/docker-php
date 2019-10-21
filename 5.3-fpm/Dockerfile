@@ -174,6 +174,7 @@ COPY confd /etc/confd
 ADD https://github.com/kelseyhightower/confd/releases/download/v0.10.0/confd-0.10.0-linux-amd64 /usr/local/bin/confd
 RUN chmod +x  /usr/local/bin/confd \
 	&& apt-get update && apt-get install -y \
+	bash \
 	libmcrypt-dev \
 	libmysqlclient-dev \
 	libsqlite3-dev \
