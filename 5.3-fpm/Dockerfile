@@ -194,7 +194,7 @@ RUN chmod +x  /usr/local/bin/confd \
 	&& ln -s /usr/include/freetype2/ /usr/include/freetype2/freetype \
 	&& docker-php-ext-configure gd --with-freetype-dir=/usr/include/freetype2 --with-jpeg-dir=/usr/include \
 	&& docker-php-ext-install -j$(nproc) bcmath iconv mcrypt mysql pdo_sqlite pdo_mysql mbstring json zip curl \
-	 gmp intl gd sockets pcntl
+	 gmp intl gd sockets pcntl \
 # pecl install does not work with this build for unkown reasons. It produces a segfault into a core dump
 #RUN pecl install imagick \
 #	 && docker-php-ext-enable imagick
